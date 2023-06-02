@@ -1,4 +1,4 @@
-package Source;
+package main.java.javann;
 
 
 public class NeuralNetwork {

@@ -1,4 +1,4 @@
-package Source;
+package main.java.javann;
 
 
 public class LinearAlgebra {
@@ -37,7 +37,7 @@ public class LinearAlgebra {
     }
 
     public static double[] getColumn(double[][] matrix, int col) {
-        double[] column = new double[matrix[0].length];
+        double[] column = new double[matrix.length];
         for (int row = 0; row < matrix.length; row++) {
             column[row] = matrix[row][col];
         }
