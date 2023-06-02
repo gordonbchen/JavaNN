@@ -18,10 +18,10 @@ public class NeuralNetwork {
 
     public NeuralNetwork() {
         // Initialize weights and biases.
-        layer1Weights = LinearAlegbra.createRandomDoubleArray(LAYER_1_NODES, LAYER_1_INPUTS);
-        layer1Biases = LinearAlegbra.createRandomDoubleArray(LAYER_1_NODES);
+        layer1Weights = LinearAlgebra.createRandomDoubleArray(LAYER_1_NODES, LAYER_1_INPUTS);
+        layer1Biases = LinearAlgebra.createRandomDoubleArray(LAYER_1_NODES);
 
-        layer2Weights = LinearAlegbra.createRandomDoubleArray(LAYER_2_NODES, LAYER_2_INPUTS);
-        layer2Biases = LinearAlegbra.createRandomDoubleArray(LAYER_2_NODES);
+        layer2Weights = LinearAlgebra.createRandomDoubleArray(LAYER_2_NODES, LAYER_2_INPUTS);
+        layer2Biases = LinearAlgebra.createRandomDoubleArray(LAYER_2_NODES);
     }
 }
