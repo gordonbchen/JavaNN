@@ -33,5 +33,5 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'main.java.javann.Main'
+    mainClass = 'javann.Main'
 }
