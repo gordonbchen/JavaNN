@@ -41,15 +41,17 @@ public class Functions {
         double[][] answer = new double[rows][cols];
 
         double[][] safeMatrix = getSafeMatrix(matrix);
+        double[][] e_X = LinAlg.exp(safeMatrix);
+
         for (int col = 0; col < cols; col++) {
             // Find column sum.
             double colSum = 0.0;
             for (int row = 0; row < rows; row++) {
-                colSum += Math.exp(safeMatrix[row][col]);
+                colSum += e_X[row][col];
             }
 
             for (int row = 0; row < rows; row++) {
-                answer[row][col] = Math.exp(safeMatrix[row][col]) / colSum;
+                answer[row][col] = e_X[row][col] / colSum;
             }
         }
 
@@ -62,15 +64,15 @@ public class Functions {
         double[][] answers = new double[rows][cols];
 
         double[][] safeMatrix = getSafeMatrix(matrix);
+        double[][] e_X = LinAlg.exp(safeMatrix);
 
-        double[] colMaxVals = colMax(safeMatrix);
+        double[] colSums = colSum(e_X);
 
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                double e_X = Math.exp(safeMatrix[row][col]);
-                double a = colMaxVals[col] - e_X;
+                double a = colSums[col] - e_X[row][col];
                 
-                answers[row][col] = (a * e_X) / (Math.pow(colMaxVals[col], 2));
+                answers[row][col] = (a * e_X[row][col]) / (Math.pow(colSums[col], 2));
             }
         }
 
@@ -119,6 +121,21 @@ public class Functions {
         return colMaxVals;
     }
 
+    public static double[] colSum(double[][] matrix) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+
+        double[] colSums = new double[cols];
+        for (int col = 0; col < cols; col++) {
+            double colSum = 0.0;
+            for (int row = 0; row < rows; row++) {
+                colSum += matrix[row][col];
+            }
+            colSums[col] = colSum;
+        }
+        return colSums;
+    }
+
 
     public static double[][] meanSquaredErrorDeriv(double[][] pred, double[][] actual) {
         int rows = pred.length;
@@ -128,7 +145,7 @@ public class Functions {
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 double error = pred[row][col] - actual[row][col];
-                answer[row][col] = (2.0 / pred[0].length) * error;
+                answer[row][col] = (2.0 / pred.length) * error;
             }
         }
         return answer;

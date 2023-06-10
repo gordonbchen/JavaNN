@@ -21,7 +21,7 @@ public class NeuralNetwork {
     private double[] b2;
 
     // Hyper.
-    private final double LEARNING_RATE = 0.25;
+    private final double LEARNING_RATE = 0.5;
     private final int MINI_BATCH_SIZE = 256;
 
     public NeuralNetwork() {
@@ -54,10 +54,8 @@ public class NeuralNetwork {
 
         double[][] oneHotY = Functions.oneHotEncode(y);
 
-        double[][] dZ2 = LinAlg.minus(A2, oneHotY);
-
-        // double[][] dA2 = Functions.meanSquaredErrorDeriv(A2, oneHotY);
-        // double[][] dZ2 = LinAlg.multiply(dA2, Functions.softmaxDeriv(Z2));
+        double[][] dA2 = Functions.meanSquaredErrorDeriv(A2, oneHotY);
+        double[][] dZ2 = LinAlg.multiply(dA2, Functions.softmaxDeriv(Z2));
 
         double[][] dW2 = LinAlg.multiply((1.0 / y.length), LinAlg.dot(dZ2, LinAlg.transpose(A1)));
         double[] db2 = LinAlg.colMean(dZ2);

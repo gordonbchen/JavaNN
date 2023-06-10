@@ -152,6 +152,19 @@ public class LinAlg {
         return answer;
     }
 
+    public static double[][] exp(double[][] matrix) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+        double[][] answer = new double[rows][cols];
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                answer[row][col] = Math.exp(matrix[row][col]);
+            }
+        }
+        return answer;
+    }
+
 
     public static String showShape(double[] vector) {
         String shape = "(" + vector.length + ")";

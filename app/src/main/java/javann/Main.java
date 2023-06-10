@@ -19,7 +19,7 @@ public class Main {
         DataStruct testingData = getDataSection(trainingDataSize, data.labels.length, data);
 
         NeuralNetwork neuralNetwork = new NeuralNetwork();
-        neuralNetwork.train(trainingData.images, trainingData.labels, 500);
+        neuralNetwork.train(trainingData.images, trainingData.labels, 250);
     }
 
     public static DataStruct getCSVData(String filePath) {
