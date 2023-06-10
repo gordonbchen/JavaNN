@@ -14,8 +14,12 @@ public class Main {
 
         DataStruct data = getCSVData(filePath);
 
+        int trainingDataSize = 5_000;
+        DataStruct trainingData = getDataSection(0, trainingDataSize, data);
+        DataStruct testingData = getDataSection(trainingDataSize, data.labels.length, data);
+
         NeuralNetwork neuralNetwork = new NeuralNetwork();
-        neuralNetwork.train(data.images, data.labels, 500);
+        neuralNetwork.train(trainingData.images, trainingData.labels, 500);
     }
 
     public static DataStruct getCSVData(String filePath) {
@@ -67,5 +71,22 @@ public class Main {
         }
         
         return dataStruct;
+    }
+
+    public static DataStruct getDataSection(int dataStart, int dataEnd, DataStruct dataStruct) {
+        double[][] images = dataStruct.images;
+        double[] labels = dataStruct.labels;
+
+        int dataLength = dataEnd - dataStart;
+
+        double[][] sectionImages = new double[dataLength][images[0].length];
+        double[] sectionLabels = new double[dataLength];
+
+        for (int i = 0; i < dataLength; i++) {
+            sectionImages[i] = images[dataStart + i];
+            sectionLabels[i] = labels[dataStart + i];
+        }
+
+        return new DataStruct(sectionImages, sectionLabels);
     }
 }

@@ -21,25 +21,25 @@ public class NeuralNetwork {
     private double[] b2;
 
     // Hyper.
-    private final double LEARNING_RATE = 0.1;
+    private final double LEARNING_RATE = 0.25;
     private final int MINI_BATCH_SIZE = 256;
 
     public NeuralNetwork() {
         // Initialize weights, biases, and define activation functions.
-        W1 = LinearAlgebra.createRandomDoubleArray(LAYER_1_NODES, LAYER_1_INPUTS);
-        b1 = LinearAlgebra.createRandomDoubleArray(LAYER_1_NODES);
+        W1 = LinAlg.createRandomDoubleArray(LAYER_1_NODES, LAYER_1_INPUTS);
+        b1 = LinAlg.createRandomDoubleArray(LAYER_1_NODES);
 
-        W2 = LinearAlgebra.createRandomDoubleArray(LAYER_2_NODES, LAYER_2_INPUTS);
-        b2 = LinearAlgebra.createRandomDoubleArray(LAYER_2_NODES);
+        W2 = LinAlg.createRandomDoubleArray(LAYER_2_NODES, LAYER_2_INPUTS);
+        b2 = LinAlg.createRandomDoubleArray(LAYER_2_NODES);
     }
 
     public ActStruct forwardProp(double[][] X) {
-        double[][] X_T = LinearAlgebra.transpose(X);
+        double[][] X_T = LinAlg.transpose(X);
 
-        double[][] Z1 = LinearAlgebra.colPlus(LinearAlgebra.dot(W1, X_T), b1);
+        double[][] Z1 = LinAlg.colPlus(LinAlg.dot(W1, X_T), b1);
         double[][] A1 = Functions.ReLU(Z1);
 
-        double[][] Z2 = LinearAlgebra.colPlus(LinearAlgebra.dot(W2, A1), b2);
+        double[][] Z2 = LinAlg.colPlus(LinAlg.dot(W2, A1), b2);
         double[][] A2 = Functions.softmax(Z2);
 
         ActStruct actStruct = new ActStruct(Z1, A1, Z2, A2);
@@ -54,17 +54,19 @@ public class NeuralNetwork {
 
         double[][] oneHotY = Functions.oneHotEncode(y);
 
-        double[][] dA2 = Functions.meanSquaredErrorDeriv(A2, oneHotY);
-        double[][] dZ2 = LinearAlgebra.multiply(dA2, Functions.softmaxDeriv(Z2));
+        double[][] dZ2 = LinAlg.minus(A2, oneHotY);
 
-        double[][] dW2 = LinearAlgebra.multiply((1.0 / y.length), LinearAlgebra.dot(dZ2, LinearAlgebra.transpose(A1)));
-        double[] db2 = LinearAlgebra.colMean(dZ2);
+        // double[][] dA2 = Functions.meanSquaredErrorDeriv(A2, oneHotY);
+        // double[][] dZ2 = LinAlg.multiply(dA2, Functions.softmaxDeriv(Z2));
 
-        double[][] dA1 = LinearAlgebra.dot(LinearAlgebra.transpose(W2), dZ2);
-        double[][] dZ1 = LinearAlgebra.multiply(dA1, Functions.ReLU_Deriv(Z1));
+        double[][] dW2 = LinAlg.multiply((1.0 / y.length), LinAlg.dot(dZ2, LinAlg.transpose(A1)));
+        double[] db2 = LinAlg.colMean(dZ2);
 
-        double[][] dW1 = LinearAlgebra.multiply((1.0 / y.length), LinearAlgebra.dot(dZ1, X));
-        double[] db1 = LinearAlgebra.colMean(dZ1);
+        double[][] dA1 = LinAlg.dot(LinAlg.transpose(W2), dZ2);
+        double[][] dZ1 = LinAlg.multiply(dA1, Functions.ReLU_Deriv(Z1));
+
+        double[][] dW1 = LinAlg.multiply((1.0 / y.length), LinAlg.dot(dZ1, X));
+        double[] db1 = LinAlg.colMean(dZ1);
 
         DerivStruct derivStruct = new DerivStruct(db1, dW1, db2, dW2);
         return derivStruct;
@@ -76,10 +78,10 @@ public class NeuralNetwork {
         double[] db2 = derivStruct.db2;
         double[][] dW2 = derivStruct.dW2;
 
-        b1 = LinearAlgebra.minus(b1, LinearAlgebra.multiply(LEARNING_RATE, db1));
-        W1 = LinearAlgebra.minus(W1, LinearAlgebra.multiply(LEARNING_RATE, dW1));
-        b2 = LinearAlgebra.minus(b2, LinearAlgebra.multiply(LEARNING_RATE, db2));
-        W2 = LinearAlgebra.minus(W2, LinearAlgebra.multiply(LEARNING_RATE, dW2));
+        b1 = LinAlg.minus(b1, LinAlg.multiply(LEARNING_RATE, db1));
+        W1 = LinAlg.minus(W1, LinAlg.multiply(LEARNING_RATE, dW1));
+        b2 = LinAlg.minus(b2, LinAlg.multiply(LEARNING_RATE, db2));
+        W2 = LinAlg.minus(W2, LinAlg.multiply(LEARNING_RATE, dW2));
     }
 
     public void gradientDescent(double[][] X, double[] y) {

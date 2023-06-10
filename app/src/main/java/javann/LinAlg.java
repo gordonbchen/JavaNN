@@ -1,7 +1,7 @@
 package javann;
 
 
-public class LinearAlgebra {
+public class LinAlg {
 
     public static double[] createRandomDoubleArray(int cols) {
         double[] array = new double[cols];
@@ -98,9 +98,9 @@ public class LinearAlgebra {
 
     public static double[][] colPlus(double[][] matrix, double[] columnVector) {
         double[][] answer = new double[matrix.length][matrix[0].length];
-        for (int col = 0; col < columnVector.length; col++) {
-            for (int row = 0; row < matrix.length; row++) {
-                answer[row][col] = matrix[row][col] + columnVector[col];
+        for (int row = 0; row < matrix.length; row++) {
+            for (int col = 0; col < matrix[0].length; col++) {
+                answer[row][col] = matrix[row][col] + columnVector[row];
             }
         }
         return answer;
@@ -121,14 +121,13 @@ public class LinearAlgebra {
     }
 
     public static double[] colMean(double[][] matrix) {
-        double[] answer = new double[matrix[0].length];
-        for (int col = 0; col < matrix[0].length; col++) {
+        double[] answer = new double[matrix.length];
+        for (int row = 0; row < matrix.length; row++) {
             double sum = 0.0;
-            for (int row = 0; row < matrix.length; row++) {
-                sum += matrix[row][col];;
+            for (int col = 0; col < matrix[0].length; col++) {
+                sum += matrix[row][col];
             }
-
-            answer[col] = sum / matrix.length;
+            answer[row] = sum / matrix[0].length;
         }
         return answer;
     }
@@ -151,5 +150,19 @@ public class LinearAlgebra {
             answer[row] = minus(m1[row], m2[row]);
         }
         return answer;
+    }
+
+
+    public static String showShape(double[] vector) {
+        String shape = "(" + vector.length + ")";
+        return shape;
+    }
+
+    public static String showShape(double[][] matrix) {
+        int rows = matrix.length;
+        int cols =  matrix[0].length;
+
+        String shape = "(" + rows + ", " + cols + ")";
+        return shape;
     }
 }
