@@ -14,7 +14,7 @@ public class Main {
 
         DataStruct data = getCSVData(filePath);
 
-        int trainingDataSize = 5_000;
+        int trainingDataSize = 10_000;
         DataStruct trainingData = getDataSection(0, trainingDataSize, data);
         DataStruct testingData = getDataSection(trainingDataSize, data.labels.length, data);
 

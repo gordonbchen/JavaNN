@@ -22,7 +22,7 @@ public class NeuralNetwork {
 
     // Hyper.
     private final double LEARNING_RATE = 0.5;
-    private final int MINI_BATCH_SIZE = 256;
+    private final int MINI_BATCH_SIZE = 512;
 
     public NeuralNetwork() {
         // Initialize weights, biases, and define activation functions.
