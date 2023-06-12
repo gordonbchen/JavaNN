@@ -7,22 +7,22 @@ import javann.structs.*;
 
 public class NeuralNetwork {
     // Layer 1
-    private final int LAYER_1_INPUTS = 784;
-    private final int LAYER_1_NODES = 12;
+    private static final int LAYER_1_INPUTS = 784;
+    private static final int LAYER_1_NODES = 12;
 
     private double[][] W1;
     private double[] b1;
 
     // Layer 2
-    private final int LAYER_2_INPUTS = 12;
-    private final int LAYER_2_NODES = 10;
+    private static final int LAYER_2_INPUTS = 12;
+    private static final int LAYER_2_NODES = 10;
 
     private double[][] W2;
     private double[] b2;
 
     // Hyper.
-    private final double LEARNING_RATE = 0.5;
-    private final int MINI_BATCH_SIZE = 512;
+    private static final double LEARNING_RATE = 0.5;
+    private static final int MINI_BATCH_SIZE = 512;
 
     public NeuralNetwork() {
         // Initialize weights, biases, and define activation functions.
@@ -33,7 +33,7 @@ public class NeuralNetwork {
         b2 = LinAlg.createRandomDoubleArray(LAYER_2_NODES);
     }
 
-    public ActStruct forwardProp(double[][] X) {
+    private ActStruct forwardProp(double[][] X) {
         double[][] X_T = LinAlg.transpose(X);
 
         double[][] Z1 = LinAlg.colPlus(LinAlg.dot(W1, X_T), b1);
@@ -46,7 +46,7 @@ public class NeuralNetwork {
         return actStruct;
     }
 
-    public DerivStruct backProp(ActStruct actStruct, double[][] X, double[] y) {
+    private DerivStruct backProp(ActStruct actStruct, double[][] X, double[] y) {
         double[][] Z1 = actStruct.Z1;
         double[][] A1 = actStruct.A1;
         double[][] Z2 = actStruct.Z2;
@@ -70,7 +70,7 @@ public class NeuralNetwork {
         return derivStruct;
     }
 
-    public void applyGradients(DerivStruct derivStruct) {
+    private void applyGradients(DerivStruct derivStruct) {
         double[] db1 = derivStruct.db1;
         double[][] dW1 = derivStruct.dW1;
         double[] db2 = derivStruct.db2;
@@ -82,7 +82,7 @@ public class NeuralNetwork {
         W2 = LinAlg.minus(W2, LinAlg.multiply(LEARNING_RATE, dW2));
     }
 
-    public void gradientDescent(double[][] X, double[] y) {
+    private void gradientDescent(double[][] X, double[] y) {
         ActStruct actStruct = forwardProp(X);
         DerivStruct derivStruct = backProp(actStruct, X, y);
 
@@ -113,7 +113,7 @@ public class NeuralNetwork {
         }
     }
 
-    public double[][] getMiniBatchX(double[][] X, int startIndex, int miniBatchSize) {
+    private double[][] getMiniBatchX(double[][] X, int startIndex, int miniBatchSize) {
         double[][] miniBatchX = new double[miniBatchSize][X[0].length];
         for (int i = 0; i < miniBatchSize; i++) {
             miniBatchX[i] = X[startIndex + i];
@@ -121,7 +121,7 @@ public class NeuralNetwork {
         return miniBatchX;
     }
 
-    public double[] getMiniBatchY(double[] y, int startIndex, int miniBatchSize) {
+    private double[] getMiniBatchY(double[] y, int startIndex, int miniBatchSize) {
         double[] miniBatchY = new double[miniBatchSize];
         for (int i = 0; i < miniBatchSize; i++) {
             miniBatchY[i] = y[startIndex + i];
@@ -129,7 +129,7 @@ public class NeuralNetwork {
         return miniBatchY;
     }
 
-    public Integer[] getShuffledInds(int length) {
+    private Integer[] getShuffledInds(int length) {
         Integer[] inds = new Integer[length];
         for (int i = 0; i < length; i++) {
             inds[i] = i;
@@ -142,7 +142,7 @@ public class NeuralNetwork {
         return inds;
     }
 
-    public double[][] getShuffledX(double[][] X, Integer[] shuffledInds) {
+    private double[][] getShuffledX(double[][] X, Integer[] shuffledInds) {
         double[][] shuffled = new double[X.length][X[0].length];
 
         for (int i = 0; i < X.length; i++) {
@@ -151,7 +151,7 @@ public class NeuralNetwork {
         return shuffled;
     }
 
-    public double[] getShuffledY(double[] y, Integer[] shuffledInds) {
+    private double[] getShuffledY(double[] y, Integer[] shuffledInds) {
         double[] shuffled = new double[y.length];
 
         for (int i = 0; i < y.length; i++) {
