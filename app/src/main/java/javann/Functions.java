@@ -184,7 +184,7 @@ public class Functions {
     public static double getPercentAccuracy(double[] actual, double[] guess) {
         double correct = 0;
         for (int i = 0; i < actual.length; i++) {
-            if (actual[i] == guess[i]) {
+            if (((int) (actual[i])) == ((int) (guess[i]))) {
                 correct++;
             }
         }
